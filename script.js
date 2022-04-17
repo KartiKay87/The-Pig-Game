@@ -32,7 +32,7 @@ let currScore = 0;
 let activePlayer = 0;
 let scores = [0, 0];
 let playable = true;
-let newPlayer = 0;
+let newPlayer = 1;
 
 //Selecting Elements
 const score0El = document.getElementById('score--0');
@@ -49,11 +49,31 @@ const btnRoll = document.querySelector('.btn--roll');
 const btnNew = document.querySelector('.btn--new');
 const instructions = document.querySelector('.btn--instructions');
 
-//Starting the game
-score0El.textContent = 0;
-score1El.textContent = 0;
-diceEl.classList.add('hidden');
-
+//Initializing function
+const init = function () {
+  playable = true;
+  score0El.textContent = 0;
+  score1El.textContent = 0;
+  currScore = 0;
+  scores = [0, 0];
+  diceEl.classList.add('hidden');
+  document.getElementById(`current--${activePlayer}`).textContent = 0;
+  if (!diceEl.classList.contains('hidden')) {
+    diceEl.classList.add('hidden');
+  }
+  newPlayer = newPlayer === 0 ? 1 : 0;
+  document
+    .querySelector(`.player--${activePlayer}`)
+    .classList.remove('player--winner');
+  document
+    .querySelector(`.player--${activePlayer}`)
+    .classList.remove('player--active');
+  activePlayer = newPlayer;
+  document
+    .querySelector(`.player--${activePlayer}`)
+    .classList.add('player--active');
+};
+init();
 //Switch Function
 const switchPlayer = function () {
   document.getElementById(`current--${activePlayer}`).textContent = 0;
@@ -98,27 +118,6 @@ btnHold.addEventListener('click', function () {
   }
 });
 
-btnNew.addEventListener('click', function () {
-  playable = true;
-  score0El.textContent = 0;
-  score1El.textContent = 0;
-  currScore = 0;
-  scores = [0, 0];
-  document.getElementById(`current--${activePlayer}`).textContent = 0;
-  if (!diceEl.classList.contains('hidden')) {
-    diceEl.classList.add('hidden');
-  }
-  newPlayer = newPlayer === 0 ? 1 : 0;
-  document
-    .querySelector(`.player--${activePlayer}`)
-    .classList.remove('player--winner');
-  document
-    .querySelector(`.player--${activePlayer}`)
-    .classList.remove('player--active');
-  activePlayer = newPlayer;
-  document
-    .querySelector(`.player--${activePlayer}`)
-    .classList.add('player--active');
-});
+btnNew.addEventListener('click', init);
 
 instructions.addEventListener('click', openModal);
